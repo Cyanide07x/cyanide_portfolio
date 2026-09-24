@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage>
         curve: const Interval(
           0.0,
           0.7,
-          curve: Curves.easeOutBack,
+          curve: Curves.easeOutCubic,
         ),
       ),
     );
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage>
         curve: const Interval(
           0.25,
           1.0,
-          curve: Curves.easeOutBack,
+          curve: Curves.easeOutCubic,
         ),
       ),
     );
