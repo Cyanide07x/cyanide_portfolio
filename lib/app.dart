@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home/home_page.dart';
+import 'screens/intro/intro_page.dart';
 import 'theme/app_theme.dart';
 
 class PortfolioApp extends StatelessWidget {
@@ -14,7 +14,7 @@ class PortfolioApp extends StatelessWidget {
 
       theme: AppTheme.dark,
 
-      home: const HomePage(),
+      home: const IntroPage(),
     );
   }
 }

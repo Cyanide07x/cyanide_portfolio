@@ -21,4 +21,5 @@ flutter:
 
   assets:
     - assets/images/logos/cynx_logo.svg
+    - assets/images/logos/cynx_mark.svg
     - assets/images/logos/corner_decorations.svg
