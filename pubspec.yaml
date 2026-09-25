@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.3.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -23,3 +24,4 @@ flutter:
     - assets/images/logos/cynx_logo.svg
     - assets/images/logos/cynx_mark.svg
     - assets/images/logos/corner_decorations.svg
+    - assets/resume/Utsav_Sachan_Resume_cynx.pdf
