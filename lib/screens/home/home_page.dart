@@ -15,8 +15,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
 
   // =========================================================
-  // POSITION SETTINGS
-  // Change these values to move the elements
+  // DESKTOP POSITION SETTINGS
   // =========================================================
 
   // LOGO POSITION
@@ -30,6 +29,22 @@ class _HomePageState extends State<HomePage>
   // EXPLORE BUTTON POSITION
   static const double buttonX = 0;
   static const double buttonY = 260;
+
+  // =========================================================
+  // MOBILE POSITION SETTINGS
+  // =========================================================
+
+  // LOGO POSITION
+  static const double mobileLogoX = 0;
+  static const double mobileLogoY = -30;
+
+  // CORNER DESIGN POSITION
+  static const double mobileCornerRight = -25;
+  static const double mobileCornerBottom = -30;
+
+  // EXPLORE BUTTON POSITION
+  static const double mobileButtonX = 0;
+  static const double mobileButtonY = 190;
 
   // =========================================================
   // ANIMATIONS
@@ -73,7 +88,7 @@ class _HomePageState extends State<HomePage>
     );
 
     // =======================================================
-    // CORNER DESIGN - START FROM BOTTOM RIGHT
+    // CORNER DESIGN - RIGHT
     // =======================================================
 
     _cornerRightAnimation = Tween<double>(
@@ -89,6 +104,10 @@ class _HomePageState extends State<HomePage>
         ),
       ),
     );
+
+    // =======================================================
+    // CORNER DESIGN - BOTTOM
+    // =======================================================
 
     _cornerBottomAnimation = Tween<double>(
       begin: -350,
@@ -116,72 +135,128 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
+    return LayoutBuilder(
+      builder: (context, constraints) {
 
-      body: Stack(
-        children: [
+        final double screenWidth = constraints.maxWidth;
 
-          // ===================================================
-          // CORNER POLYGONS
-          // ===================================================
+        // =====================================================
+        // RESPONSIVE BREAKPOINT
+        // =====================================================
 
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                right: _cornerRightAnimation.value,
-                bottom: _cornerBottomAnimation.value,
-                child: child!,
-              );
-            },
-            child: SvgPicture.asset(
-              'assets/images/logos/corner_decorations.svg',
-              width: 300,
-            ),
-          ),
+        final bool isMobile = screenWidth < 600;
 
-          // ===================================================
-          // CYNX LOGO + TAGLINE
-          // ===================================================
+        // =====================================================
+        // RESPONSIVE LOGO SIZE
+        // =====================================================
 
-          AnimatedBuilder(
-            animation: _logoScaleAnimation,
-            builder: (context, child) {
-              return Center(
+        final double logoWidth = isMobile
+            ? screenWidth * 0.88
+            : 600;
+
+        // =====================================================
+        // RESPONSIVE CORNER SIZE
+        // =====================================================
+
+        final double cornerWidth = isMobile
+            ? screenWidth * 0.60
+            : 300;
+
+        // =====================================================
+        // RESPONSIVE POSITIONS
+        // =====================================================
+
+        final double currentLogoX =
+            isMobile ? mobileLogoX : logoX;
+
+        final double currentLogoY =
+            isMobile ? mobileLogoY : logoY;
+
+        final double currentCornerRight =
+            isMobile ? mobileCornerRight : cornerRight;
+
+        final double currentCornerBottom =
+            isMobile ? mobileCornerBottom : cornerBottom;
+
+        final double currentButtonX =
+            isMobile ? mobileButtonX : buttonX;
+
+        final double currentButtonY =
+            isMobile ? mobileButtonY : buttonY;
+
+        return Scaffold(
+          backgroundColor: AppColors.background,
+
+          body: Stack(
+            children: [
+
+              // =================================================
+              // CORNER POLYGONS
+              // =================================================
+
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Positioned(
+                    right: _cornerRightAnimation.value +
+                        (currentCornerRight - cornerRight),
+                    bottom: _cornerBottomAnimation.value +
+                        (currentCornerBottom - cornerBottom),
+                    child: child!,
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/images/logos/corner_decorations.svg',
+                  width: cornerWidth,
+                ),
+              ),
+
+              // =================================================
+              // CYNX LOGO + TAGLINE
+              // =================================================
+
+              AnimatedBuilder(
+                animation: _logoScaleAnimation,
+                builder: (context, child) {
+                  return Center(
+                    child: Transform.translate(
+                      offset: Offset(
+                        currentLogoX,
+                        currentLogoY,
+                      ),
+                      child: Transform.scale(
+                        scale: _logoScaleAnimation.value,
+                        child: child,
+                      ),
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/images/logos/cynx_logo.svg',
+                  width: logoWidth,
+                ),
+              ),
+
+              // =================================================
+              // EXPLORE BUTTON
+              // =================================================
+
+              Center(
                 child: Transform.translate(
-                  offset: const Offset(
-                    logoX,
-                    logoY,
+                  offset: Offset(
+                    currentButtonX,
+                    currentButtonY,
                   ),
                   child: Transform.scale(
-                    scale: _logoScaleAnimation.value,
-                    child: child,
+                    scale: isMobile ? 0.82 : 1.0,
+                    child: const ExploreButton(),
                   ),
                 ),
-              );
-            },
-            child: SvgPicture.asset(
-              'assets/images/logos/cynx_logo.svg',
-              width: 600,
-            ),
-          ),
-
-          // ===================================================
-          // EXPLORE BUTTON
-          // ===================================================
-
-          Center(
-            child: Transform.translate(
-              offset: const Offset(
-                buttonX,
-                buttonY,
               ),
-              child: const ExploreButton(),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
