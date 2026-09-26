@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../theme/app_colors.dart';
 import '../../widgets/common/explore_button.dart';
+import '../../widgets/common/page_transition.dart';
 import '../home/home_page.dart';
 
 class IntroPage extends StatefulWidget {
@@ -252,17 +253,17 @@ class _IntroPageState extends State<IntroPage>
                     scale: isMobile ? 0.82 : 1.0,
                     child: GestureDetector(
                       onTap: () {
-                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-            ),
-          );
-        },
+                        Navigator.pushReplacement(
+                          context,
+                          CynxPageRoute(
+                            page: const HomePage(),
+                          ),
+                        );
+                      },
                       child: const ExploreButton(),
+                    ),
                   ),
                 ),
-              ),
               ),
             ],
           ),

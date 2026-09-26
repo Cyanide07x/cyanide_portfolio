@@ -5,6 +5,7 @@ import '../../screens/intro/intro_page.dart';
 import '../../theme/app_colors.dart';
 import '../../screens/work/work_page.dart';
 import '../../screens/home/home_page.dart';
+import 'page_transition.dart';
 
 class PortfolioHeader extends StatelessWidget {
   final String activePage;
@@ -14,13 +15,49 @@ class PortfolioHeader extends StatelessWidget {
     this.activePage = 'Home',
   });
 
+  // =====================================================
+  // GO TO INTRO
+  // =====================================================
+
   void _goToIntro(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const IntroPage(),
+      CynxPageRoute(
+        page: const IntroPage(),
       ),
     );
+  }
+
+  // =====================================================
+  // MOBILE NAVIGATION
+  // =====================================================
+
+  void _handleMobileNavigation(
+    BuildContext context,
+    String value,
+  ) {
+    if (value == activePage) {
+      return;
+    }
+
+    if (value == 'Home') {
+      Navigator.pushReplacement(
+        context,
+        CynxPageRoute(
+          page: const HomePage(),
+        ),
+      );
+    } else if (value == 'Work') {
+      Navigator.pushReplacement(
+        context,
+        CynxPageRoute(
+          page: const WorkPage(),
+        ),
+      );
+    }
+
+    // About and Contact are intentionally left
+    // without navigation until those pages are created.
   }
 
   @override
@@ -100,73 +137,84 @@ class PortfolioHeader extends StatelessWidget {
                 // =========================
 
                 if (isMobile)
-  PopupMenuButton<String>(
-    icon: const Icon(
-      Icons.menu,
-      color: Colors.white,
-      size: 28,
-    ),
-    color: const Color(0xFF0A0A0A),
-    offset: const Offset(0, 55),
+                  PopupMenuButton<String>(
+                    icon: const Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    color: const Color(0xFF0A0A0A),
+                    offset: const Offset(0, 55),
 
-    onSelected: (value) {
-      if (value == 'Home') {
-        // Already on Home
-      }
-    },
+                    // =========================
+                    // MOBILE MENU SELECTION
+                    // =========================
 
-    itemBuilder: (context) => [
-      PopupMenuItem<String>(
-        value: 'Home',
-        child: Text(
-          'Home',
-          style: TextStyle(
-            color: activePage == 'Home'
-                ? AppColors.primary
-                : Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-          ),
-        ),
-      ),
+                    onSelected: (value) {
+                      _handleMobileNavigation(
+                        context,
+                        value,
+                      );
+                    },
 
-      const PopupMenuItem<String>(
-        value: 'Work',
-        child: Text(
-          'Work',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-          ),
-        ),
-      ),
+                    itemBuilder: (context) => [
+                      PopupMenuItem<String>(
+                        value: 'Home',
+                        child: Text(
+                          'Home',
+                          style: TextStyle(
+                            color: activePage == 'Home'
+                                ? AppColors.primary
+                                : Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
 
-      const PopupMenuItem<String>(
-        value: 'About',
-        child: Text(
-          'About',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-          ),
-        ),
-      ),
+                      PopupMenuItem<String>(
+                        value: 'Work',
+                        child: Text(
+                          'Work',
+                          style: TextStyle(
+                            color: activePage == 'Work'
+                                ? AppColors.primary
+                                : Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
 
-      const PopupMenuItem<String>(
-        value: 'Contact',
-        child: Text(
-          'Contact',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    ],
-  ),
+                      PopupMenuItem<String>(
+                        value: 'About',
+                        child: Text(
+                          'About',
+                          style: TextStyle(
+                            color: activePage == 'About'
+                                ? AppColors.primary
+                                : Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+
+                      PopupMenuItem<String>(
+                        value: 'Contact',
+                        child: Text(
+                          'Contact',
+                          style: TextStyle(
+                            color: activePage == 'Contact'
+                                ? AppColors.primary
+                                : Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -175,7 +223,6 @@ class PortfolioHeader extends StatelessWidget {
     );
   }
 }
-
 
 // =====================================================
 // NAVIGATION ITEM
@@ -190,22 +237,29 @@ class _NavItem extends StatelessWidget {
     required this.isActive,
   });
 
+  // =====================================================
+  // DESKTOP NAVIGATION
+  // =====================================================
+
   void _handleTap(BuildContext context) {
     if (title == 'Home') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
+        CynxPageRoute(
+          page: const HomePage(),
         ),
       );
     } else if (title == 'Work') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => const WorkPage(),
+        CynxPageRoute(
+          page: const WorkPage(),
         ),
       );
     }
+
+    // About and Contact are intentionally left
+    // without navigation until those pages are created.
   }
 
   @override
@@ -232,7 +286,9 @@ class _NavItem extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+
               const SizedBox(height: 12),
+
               AnimatedContainer(
                 duration: const Duration(
                   milliseconds: 200,
