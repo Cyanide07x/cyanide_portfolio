@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../screens/intro/intro_page.dart';
 import '../../theme/app_colors.dart';
+import '../../screens/work/work_page.dart';
+import '../../screens/home/home_page.dart';
 
 class PortfolioHeader extends StatelessWidget {
   final String activePage;
@@ -188,36 +190,60 @@ class _NavItem extends StatelessWidget {
     required this.isActive,
   });
 
+  void _handleTap(BuildContext context) {
+    if (title == 'Home') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } else if (title == 'Work') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const WorkPage(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 4,
-        bottom: 13,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: isActive
-                  ? Colors.white
-                  : const Color(0xFF9E9699),
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => _handleTap(context),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 4,
+            bottom: 13,
           ),
-
-          const SizedBox(height: 12),
-
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            height: 2,
-            width: isActive ? 50 : 0,
-            color: AppColors.primary,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  color: isActive
+                      ? Colors.white
+                      : const Color(0xFF9E9699),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 12),
+              AnimatedContainer(
+                duration: const Duration(
+                  milliseconds: 200,
+                ),
+                height: 2,
+                width: isActive ? 50 : 0,
+                color: AppColors.primary,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
