@@ -5,7 +5,12 @@ import '../../widgets/common/portfolio_header.dart';
 import '../../widgets/common/portfolio_footer.dart';
 
 class WorkPage extends StatelessWidget {
-  const WorkPage({super.key});
+  final bool showHeader;
+
+  const WorkPage({
+    super.key,
+    this.showHeader = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +22,34 @@ class WorkPage extends StatelessWidget {
           // HEADER
           // ==========================================================
 
-          const PortfolioHeader(
-            activePage: 'Work',
-          ),
+          if (showHeader)
+            const PortfolioHeader(
+              activePage: 'Work',
+            ),
 
           // ==========================================================
-          // PAGE CONTENT
+          // SCROLLABLE PAGE
           // ==========================================================
 
           Expanded(
             child: SingleChildScrollView(
-              child: _buildPageContent(context),
+              child: Column(
+                children: [
+                  // ====================================================
+                  // PAGE CONTENT
+                  // ====================================================
+
+                  _buildPageContent(context),
+
+                  // ====================================================
+                  // FOOTER
+                  // ====================================================
+
+                  const PortfolioFooter(),
+                ],
+              ),
             ),
           ),
-
-          // ==========================================================
-          // FOOTER
-          // ==========================================================
-
-          const PortfolioFooter(),
         ],
       ),
     );
@@ -58,8 +72,8 @@ class WorkPage extends StatelessWidget {
         final double horizontalPadding = isMobile
             ? 24
             : isTablet
-                ? 40
-                : 92;
+                ? 50
+                : 90;
 
         // ============================================================
         // HERO
@@ -78,7 +92,7 @@ class WorkPage extends StatelessWidget {
               constraints: BoxConstraints(
                 maxWidth: isMobile
                     ? double.infinity
-                    : 850,
+                    : 1000,
               ),
               child: Column(
                 crossAxisAlignment:
@@ -89,7 +103,7 @@ class WorkPage extends StatelessWidget {
                     style: TextStyle(
                       color: AppColors.primary,
                       fontSize:
-                          isMobile ? 16 : 18,
+                          14,
                       fontWeight:
                           FontWeight.w700,
                     ),
@@ -97,7 +111,7 @@ class WorkPage extends StatelessWidget {
 
                   SizedBox(
                     height:
-                        isMobile ? 24 : 26,
+                        isMobile ? 28 : 35,
                   ),
 
                   Text(
@@ -106,19 +120,17 @@ class WorkPage extends StatelessWidget {
                       color: Colors.white,
                       fontSize: isMobile
                           ? 36
-                          : isTablet
-                              ? 42
-                              : 46,
-                      height: 1.15,
+                          : 58,
+                      height: 1.05,
                       fontWeight:
-                          FontWeight.w800,
-                      letterSpacing: -1,
+                          FontWeight.w700,
+                      letterSpacing: -0.5,
                     ),
                   ),
 
                   SizedBox(
                     height:
-                        isMobile ? 24 : 26,
+                        isMobile ? 24 : 35,
                   ),
 
                   Text(
@@ -130,8 +142,8 @@ class WorkPage extends StatelessWidget {
                       color:
                           const Color(0xFFB0A8AC),
                       fontSize:
-                          isMobile ? 17 : 19,
-                      height: 1.6,
+                          isMobile ? 17 : 18,
+                      height: 1.7,
                       fontWeight:
                           FontWeight.w400,
                     ),
@@ -621,12 +633,6 @@ class _CalCynxPreviewState
         // ==========================================================
         // PREVIEW HEIGHT
         // ==========================================================
-        //
-        // Workspace = compact
-        // Calendar = taller so the complete
-        // calendar fits without overflow.
-        //
-        // ==========================================================
 
         final double
             previewHeight;
@@ -694,18 +700,18 @@ class _CalCynxPreviewState
                                     centerX) /
                                 centerX)
                             .clamp(
-                          -1.0,
-                          1.0,
-                        );
+                      -1.0,
+                      1.0,
+                    );
 
                     _mouseY =
                         ((local.dy -
                                     centerY) /
                                 centerY)
                             .clamp(
-                          -1.0,
-                          1.0,
-                        );
+                      -1.0,
+                      1.0,
+                    );
                   });
                 },
 
@@ -1094,8 +1100,6 @@ class _CalCynxPreviewState
     final int month =
         _displayedMonth.month;
 
-    // First day of month.
-
     final DateTime firstDay =
         DateTime(
       year,
@@ -1103,22 +1107,8 @@ class _CalCynxPreviewState
       1,
     );
 
-    // Dart:
-    //
-    // Monday = 1
-    // Tuesday = 2
-    // ...
-    // Sunday = 7
-    //
-    // Convert to:
-    //
-    // Monday = 0
-    // Sunday = 6
-
     final int firstWeekday =
         firstDay.weekday - 1;
-
-    // Last day of month.
 
     final int daysInMonth =
         DateTime(
@@ -1127,8 +1117,6 @@ class _CalCynxPreviewState
       0,
     ).day;
 
-    // Calculate required cells.
-
     final int totalCells =
         ((firstWeekday +
                     daysInMonth +
@@ -1136,8 +1124,7 @@ class _CalCynxPreviewState
                 7) *
             7;
 
-    final List<Widget> days =
-        [];
+    final List<Widget> days = [];
 
     for (
       int i = 0;
@@ -1146,7 +1133,7 @@ class _CalCynxPreviewState
     ) {
       final int dayNumber =
           i -
-              firstWeekday +
+                  firstWeekday +
               1;
 
       if (dayNumber < 1 ||
@@ -1176,23 +1163,17 @@ class _CalCynxPreviewState
 
     return GridView.count(
       crossAxisCount: 7,
-
       shrinkWrap: true,
-
       physics:
           const NeverScrollableScrollPhysics(),
-
       mainAxisSpacing:
           isMobile ? 4 : 5,
-
       crossAxisSpacing:
           isMobile ? 3 : 5,
-
       childAspectRatio:
           isMobile
               ? 1.45
               : 1.55,
-
       children: days,
     );
   }
@@ -1221,7 +1202,6 @@ class _CalCynxPreviewState
           const Duration(
         milliseconds: 160,
       ),
-
       decoration:
           BoxDecoration(
         color: isToday
@@ -1232,7 +1212,6 @@ class _CalCynxPreviewState
             : const Color(
                 0xFF030303,
               ),
-
         border:
             Border.all(
           color: isToday
@@ -1242,13 +1221,11 @@ class _CalCynxPreviewState
                   alpha: 0.06,
                 ),
         ),
-
         borderRadius:
             BorderRadius.circular(
           isMobile ? 5 : 6,
         ),
       ),
-
       child: Center(
         child: Text(
           '${date.day}',
@@ -1259,12 +1236,10 @@ class _CalCynxPreviewState
                 : const Color(
                     0xFFB0A8AC,
                   ),
-
             fontSize:
                 isMobile
                     ? 10
                     : 11,
-
             fontWeight: isToday
                 ? FontWeight.w800
                 : FontWeight.w500,
@@ -1288,7 +1263,6 @@ class _CalCynxPreviewState
             const Color(
           0xFF070707,
         ),
-
         borderRadius:
             BorderRadius.circular(
           isMobile ? 5 : 6,
@@ -1316,22 +1290,18 @@ class _CalCynxPreviewState
     return Container(
       width:
           double.infinity,
-
       height:
           isMobile ? 36 : 40,
-
       padding:
           const EdgeInsets.symmetric(
         horizontal: 10,
       ),
-
       decoration:
           BoxDecoration(
         color:
             const Color(
           0xFF0D0D0D,
         ),
-
         border:
             Border.all(
           color:
@@ -1340,19 +1310,16 @@ class _CalCynxPreviewState
             alpha: 0.08,
           ),
         ),
-
         borderRadius:
             BorderRadius.circular(
           7,
         ),
       ),
-
       child: Row(
         children: [
           Container(
             width: 6,
             height: 6,
-
             decoration:
                 const BoxDecoration(
               color:
@@ -1371,7 +1338,6 @@ class _CalCynxPreviewState
               showingCurrentMonth
                   ? 'Today — ${now.day} ${_monthName(now.month).toLowerCase()}'
                   : 'Calendar preview',
-
               style:
                   TextStyle(
                 color:
@@ -1425,15 +1391,12 @@ class _CalCynxPreviewState
             const Duration(
           milliseconds: 160,
         ),
-
         width:
             double.infinity,
-
         height:
             isMobile
                 ? 40
                 : 45,
-
         padding:
             EdgeInsets.symmetric(
           horizontal:
@@ -1441,7 +1404,6 @@ class _CalCynxPreviewState
                   ? 10
                   : 12,
         ),
-
         decoration:
             BoxDecoration(
           color: _taskHovered
@@ -1451,7 +1413,6 @@ class _CalCynxPreviewState
               : const Color(
                   0xFF0D0D0D,
                 ),
-
           border:
               Border.all(
             color: _taskHovered
@@ -1465,7 +1426,6 @@ class _CalCynxPreviewState
                     alpha: 0.08,
                   ),
           ),
-
           borderRadius:
               BorderRadius.circular(
             isMobile
@@ -1473,7 +1433,6 @@ class _CalCynxPreviewState
                 : 8,
           ),
         ),
-
         child: Row(
           children: [
             Container(
@@ -1481,12 +1440,10 @@ class _CalCynxPreviewState
                   isMobile
                       ? 7
                       : 8,
-
               height:
                   isMobile
                       ? 7
                       : 8,
-
               decoration:
                   const BoxDecoration(
                 color:
@@ -1524,12 +1481,10 @@ class _CalCynxPreviewState
                 milliseconds:
                     150,
               ),
-
               opacity:
                   _taskHovered
                       ? 1
                       : 0.6,
-
               child:
                   const Text(
                 'Today',
@@ -1610,17 +1565,14 @@ class _PreviewTabState
       child: GestureDetector(
         onTap:
             widget.onTap,
-
         child:
             AnimatedContainer(
           duration:
               const Duration(
             milliseconds: 160,
           ),
-
           height:
               widget.height,
-
           decoration:
               BoxDecoration(
             color: active
@@ -1638,7 +1590,6 @@ class _PreviewTabState
                     : const Color(
                         0xFF100B0D,
                       ),
-
             border:
                 Border.all(
               color: active
@@ -1656,7 +1607,6 @@ class _PreviewTabState
                               0.10,
                         ),
             ),
-
             borderRadius:
                 BorderRadius.circular(
               widget.isMobile
@@ -1664,11 +1614,9 @@ class _PreviewTabState
                   : 10,
             ),
           ),
-
           child: Center(
             child: Text(
               widget.title,
-
               style:
                   TextStyle(
                 color: active
@@ -1678,12 +1626,10 @@ class _PreviewTabState
                         : const Color(
                             0xFF9E9699,
                           ),
-
                 fontSize:
                     widget.isMobile
                         ? 12
                         : 13,
-
                 fontWeight: active
                     ? FontWeight.w700
                     : FontWeight.w600,
@@ -1783,24 +1729,20 @@ class _MonthButtonState
       child: GestureDetector(
         onTap:
             widget.onTap,
-
         child:
             AnimatedContainer(
           duration:
               const Duration(
             milliseconds: 140,
           ),
-
           width:
               widget.isMobile
                   ? 24
                   : 28,
-
           height:
               widget.isMobile
                   ? 24
                   : 28,
-
           decoration:
               BoxDecoration(
             color: _hovered
@@ -1812,7 +1754,6 @@ class _MonthButtonState
                 : const Color(
                     0xFF0D0D0D,
                   ),
-
             border:
                 Border.all(
               color: _hovered
@@ -1826,13 +1767,11 @@ class _MonthButtonState
                       alpha: 0.08,
                     ),
             ),
-
             borderRadius:
                 BorderRadius.circular(
               6,
             ),
           ),
-
           child: Icon(
             widget.icon,
             color:
@@ -1872,7 +1811,6 @@ class _TechTag
         horizontal: 12,
         vertical: 7,
       ),
-
       decoration:
           BoxDecoration(
         border:
@@ -1883,13 +1821,11 @@ class _TechTag
             alpha: 0.10,
           ),
         ),
-
         borderRadius:
             BorderRadius.circular(
           2,
         ),
       ),
-
       child: Text(
         text,
         style:

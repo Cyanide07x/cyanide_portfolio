@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/common/explore_button.dart';
 import '../../widgets/common/page_transition.dart';
-import '../home/home_page.dart';
+import '../../widgets/common/portfolio_shell.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -256,7 +256,9 @@ class _IntroPageState extends State<IntroPage>
                         Navigator.pushReplacement(
                           context,
                           CynxPageRoute(
-                            page: const HomePage(),
+                            page: const PortfolioShell(
+                              initialPage: 'Home',
+                            ),
                           ),
                         );
                       },

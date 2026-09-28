@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 class CynxPageRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
 
@@ -8,15 +10,25 @@ class CynxPageRoute<T> extends PageRouteBuilder<T> {
   }) : super(
           transitionDuration:
               const Duration(milliseconds: 450),
+
           reverseTransitionDuration:
               const Duration(milliseconds: 350),
+
+          // Keep the route itself dark so there is
+          // never a white frame during the transition.
+          opaque: true,
+
           pageBuilder: (
             context,
             animation,
             secondaryAnimation,
           ) {
-            return page;
+            return ColoredBox(
+              color: AppColors.background,
+              child: page,
+            );
           },
+
           transitionsBuilder: (
             context,
             animation,
@@ -34,13 +46,18 @@ class CynxPageRoute<T> extends PageRouteBuilder<T> {
                 Tween<Offset>(
               begin: const Offset(0.06, 0),
               end: Offset.zero,
-            ).animate(curvedAnimation);
+            ).animate(
+              curvedAnimation,
+            );
 
-            return FadeTransition(
-              opacity: curvedAnimation,
-              child: SlideTransition(
-                position: slideAnimation,
-                child: child,
+            return ColoredBox(
+              color: AppColors.background,
+              child: FadeTransition(
+                opacity: curvedAnimation,
+                child: SlideTransition(
+                  position: slideAnimation,
+                  child: child,
+                ),
               ),
             );
           },

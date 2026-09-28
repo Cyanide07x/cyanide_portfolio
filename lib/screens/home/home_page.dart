@@ -8,7 +8,12 @@ import '../../widgets/common/portfolio_footer.dart';
 import '../../widgets/common/reactive_polygon.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool showHeader;
+
+  const HomePage({
+    super.key,
+    this.showHeader = true,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -97,9 +102,17 @@ class _HomePageState extends State<HomePage>
           // HEADER
           // =========================
 
-          const PortfolioHeader(
-            activePage: 'Home',
-          ),
+          // The header is shown when HomePage
+          // is used normally.
+
+          // PortfolioShell will set showHeader:
+          // false so that its persistent header
+          // remains visible instead.
+
+          if (widget.showHeader)
+            const PortfolioHeader(
+              activePage: 'Home',
+            ),
 
           // =========================
           // PAGE CONTENT
@@ -146,8 +159,8 @@ class _HomePageState extends State<HomePage>
         final double horizontalPadding = isMobile
             ? 24
             : isTablet
-                ? 32
-                : 40;
+                ? 50
+                : 90;
 
         // =========================
         // POLYGON SIZE
@@ -190,16 +203,14 @@ class _HomePageState extends State<HomePage>
         // =========================
 
         final double headingSize = isMobile
-            ? 30
+            ? 36
             : isTablet
-                ? 34
-                : 38;
+                ? 48
+                : 58;
 
         final double descriptionSize = isMobile
             ? 17
-            : isTablet
-                ? 19
-                : 21;
+            : 18;
 
         // The actual width of the Stack after
         // horizontal padding.
@@ -300,16 +311,14 @@ class _HomePageState extends State<HomePage>
                             '# What we do',
                             style: TextStyle(
                               color: AppColors.primary,
-                              fontSize:
-                                  isMobile ? 16 : 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.w700,
-                              letterSpacing: 0.2,
+                              letterSpacing: 1.5,
                             ),
                           ),
 
                           SizedBox(
-                            height:
-                                isMobile ? 22 : 26,
+                            height: isMobile ? 22 : 26,
                           ),
 
                           // =========================
@@ -317,10 +326,8 @@ class _HomePageState extends State<HomePage>
                           // =========================
 
                           AnimatedBuilder(
-                            animation:
-                                _cursorController,
-                            builder:
-                                (context, child) {
+                            animation: _cursorController,
+                            builder: (context, child) {
                               final double opacity =
                                   _cursorController.value;
 
@@ -329,17 +336,14 @@ class _HomePageState extends State<HomePage>
                                   children: [
                                     // Typed text
                                     TextSpan(
-                                      text:
-                                          _displayedText,
+                                      text: _displayedText,
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize:
-                                            headingSize,
-                                        height: 1.12,
+                                        fontSize: headingSize,
+                                        height: 1.05,
                                         fontWeight:
                                             FontWeight.w800,
-                                        letterSpacing:
-                                            -0.5,
+                                        letterSpacing: -0.5,
                                       ),
                                     ),
 
@@ -347,18 +351,15 @@ class _HomePageState extends State<HomePage>
                                     TextSpan(
                                       text: '|',
                                       style: TextStyle(
-                                        color: AppColors
-                                            .primary
+                                        color: AppColors.primary
                                             .withValues(
                                           alpha: opacity,
                                         ),
-                                        fontSize:
-                                            headingSize,
-                                        height: 1.12,
+                                        fontSize: headingSize,
+                                        height: 1.05,
                                         fontWeight:
                                             FontWeight.w800,
-                                        letterSpacing:
-                                            -0.5,
+                                        letterSpacing: -0.5,
                                       ),
                                     ),
                                   ],
@@ -368,8 +369,7 @@ class _HomePageState extends State<HomePage>
                           ),
 
                           SizedBox(
-                            height:
-                                isMobile ? 22 : 26,
+                            height: isMobile ? 22 : 26,
                           ),
 
                           // =========================
@@ -396,9 +396,8 @@ class _HomePageState extends State<HomePage>
                               style: TextStyle(
                                 color:
                                     const Color(0xFFB0A8AC),
-                                fontSize:
-                                    descriptionSize,
-                                height: 1.55,
+                                fontSize: descriptionSize,
+                                height: 1.7,
                                 fontWeight:
                                     FontWeight.w400,
                               ),
