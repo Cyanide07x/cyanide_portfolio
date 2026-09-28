@@ -4,6 +4,7 @@ import '../../theme/app_colors.dart';
 import '../../screens/home/home_page.dart';
 import '../../screens/work/work_page.dart';
 import '../../screens/about/about_page.dart';
+import '../../screens/contact/contact_page.dart';
 import 'portfolio_header.dart';
 
 class PortfolioShell extends StatefulWidget {
@@ -31,23 +32,55 @@ class _PortfolioShellState
 
     _activePage = widget.initialPage;
 
-    // Only create the page we actually start on.
     _pages[_activePage] = _createPage(_activePage);
   }
 
+  // =====================================================
+  // CREATE PAGE
+  // =====================================================
+
   Widget _createPage(String page) {
     switch (page) {
+      // -------------------------------------------------
+      // HOME
+      // -------------------------------------------------
+
+      case 'Home':
+        return const HomePage(
+          showHeader: false,
+        );
+
+      // -------------------------------------------------
+      // WORK
+      // -------------------------------------------------
+
       case 'Work':
         return const WorkPage(
           showHeader: false,
         );
+
+      // -------------------------------------------------
+      // ABOUT
+      // -------------------------------------------------
 
       case 'About':
         return const AboutPage(
           showHeader: false,
         );
 
-      case 'Home':
+      // -------------------------------------------------
+      // CONTACT
+      // -------------------------------------------------
+
+      case 'Contact':
+        return const ContactPage(
+          showHeader: false,
+        );
+
+      // -------------------------------------------------
+      // FALLBACK
+      // -------------------------------------------------
+
       default:
         return const HomePage(
           showHeader: false,
@@ -55,17 +88,17 @@ class _PortfolioShellState
     }
   }
 
+  // =====================================================
+  // CHANGE PAGE
+  // =====================================================
+
   void _changePage(String page) {
     if (page == _activePage) {
       return;
     }
 
-    // Contact will be connected later.
-    if (page == 'Contact') {
-      return;
-    }
-
-    // Create the page only the first time we visit it.
+    // Create the page only when it is opened
+    // for the first time.
     if (!_pages.containsKey(page)) {
       _pages[page] = _createPage(page);
     }
@@ -75,51 +108,32 @@ class _PortfolioShellState
     });
   }
 
+  // =====================================================
+  // BUILD
+  // =====================================================
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
       body: Column(
         children: [
-          // Fixed portfolio header.
+          // =================================================
+          // PERSISTENT HEADER
+          // =================================================
+
           PortfolioHeader(
             activePage: _activePage,
             onPageChanged: _changePage,
           ),
 
-          // Page content.
+          // =================================================
+          // CURRENT PAGE
+          // =================================================
+
           Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                if (_pages.containsKey('Home'))
-                  Offstage(
-                    offstage: _activePage != 'Home',
-                    child: TickerMode(
-                      enabled: _activePage == 'Home',
-                      child: _pages['Home']!,
-                    ),
-                  ),
-
-                if (_pages.containsKey('Work'))
-                  Offstage(
-                    offstage: _activePage != 'Work',
-                    child: TickerMode(
-                      enabled: _activePage == 'Work',
-                      child: _pages['Work']!,
-                    ),
-                  ),
-
-                if (_pages.containsKey('About'))
-                  Offstage(
-                    offstage: _activePage != 'About',
-                    child: TickerMode(
-                      enabled: _activePage == 'About',
-                      child: _pages['About']!,
-                    ),
-                  ),
-              ],
-            ),
+            child: _pages[_activePage]!,
           ),
         ],
       ),
