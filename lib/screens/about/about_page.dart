@@ -83,7 +83,7 @@ class AboutPage extends StatelessWidget {
             child: const Text(
               'I work on things that stopped syncing.',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.white,
                 fontSize: 58,
                 height: 1.05,
                 fontWeight: FontWeight.w700,
@@ -100,7 +100,7 @@ class AboutPage extends StatelessWidget {
             child: const Text(
               "I'm a Flutter developer, fresh out of college and building my first real body of work. I move between product design, brand, and app development, and I'm drawn to the seam between disciplines more than the middle of either one. Everything on this site is a project I chose because it stretched me somewhere new.",
               style: TextStyle(
-                color: Color(0xFF9E9699),
+                color: AppColors.mutedDark,
                 fontSize: 18,
                 height: 1.7,
               ),
@@ -209,13 +209,13 @@ class AboutPage extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color:
-                Colors.white.withValues(
+                AppColors.white.withValues(
               alpha: 0.08,
             ),
           ),
           bottom: BorderSide(
             color:
-                Colors.white.withValues(
+                AppColors.white.withValues(
               alpha: 0.08,
             ),
           ),
@@ -372,7 +372,7 @@ class _CapabilityCard
         border:
             Border.all(
           color:
-              Colors.white.withValues(
+              AppColors.white.withValues(
             alpha: 0.10,
           ),
         ),
@@ -401,7 +401,7 @@ class _CapabilityCard
             capability.title,
             style:
                 const TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 22,
               fontWeight:
                   FontWeight.w700,
@@ -417,7 +417,7 @@ class _CapabilityCard
             style:
                 const TextStyle(
               color:
-                  Color(0xFF9E9699),
+                  AppColors.mutedDark,
               fontSize: 14,
               height: 1.6,
             ),
@@ -464,7 +464,7 @@ class _EducationRow
           top:
               BorderSide(
             color:
-                Colors.white.withValues(
+                AppColors.white.withValues(
               alpha: 0.10,
             ),
           ),
@@ -496,7 +496,7 @@ class _EducationRow
                   style:
                       const TextStyle(
                     color:
-                        Colors.white,
+                        AppColors.white,
                     fontSize: 22,
                     fontWeight:
                         FontWeight.w700,
@@ -512,7 +512,7 @@ class _EducationRow
                   style:
                       const TextStyle(
                     color:
-                        Color(0xFF9E9699),
+                        AppColors.mutedDark,
                     fontSize: 15,
                     height: 1.5,
                   ),
@@ -548,7 +548,7 @@ class _EducationRow
                         style:
                             const TextStyle(
                           color:
-                              Colors.white,
+                              AppColors.white,
                           fontSize: 22,
                           fontWeight:
                               FontWeight.w700,
@@ -564,9 +564,7 @@ class _EducationRow
                         style:
                             const TextStyle(
                           color:
-                              Color(
-                            0xFF9E9699,
-                          ),
+                              AppColors.mutedDark,
                           fontSize: 15,
                           height: 1.5,
                         ),
@@ -634,7 +632,7 @@ class _ProcessRow
                   style:
                       const TextStyle(
                     color:
-                        Colors.white,
+                        AppColors.white,
                     fontSize: 24,
                     fontWeight:
                         FontWeight.w700,
@@ -655,9 +653,7 @@ class _ProcessRow
                     style:
                         const TextStyle(
                       color:
-                          Color(
-                        0xFF9E9699,
-                      ),
+                          AppColors.mutedDark,
                       fontSize: 15,
                       height: 1.6,
                     ),

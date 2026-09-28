@@ -105,7 +105,7 @@ class PortfolioHeader extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 color:
-                    Colors.white.withValues(alpha: 0.08),
+                    AppColors.white.withValues(alpha: 0.08),
                 width: 1,
               ),
             ),
@@ -201,7 +201,7 @@ class PortfolioHeader extends StatelessWidget {
                   PopupMenuButton<String>(
                     icon: const Icon(
                       Icons.menu,
-                      color: Colors.white,
+                      color: AppColors.white,
                       size: 28,
                     ),
                     color: const Color(0xFF0A0A0A),
@@ -223,7 +223,7 @@ class PortfolioHeader extends StatelessWidget {
                             color:
                                 activePage == 'Home'
                                     ? AppColors.primary
-                                    : Colors.white,
+                                    : AppColors.white,
                             fontWeight:
                                 FontWeight.w700,
                             fontSize: 16,
@@ -239,7 +239,7 @@ class PortfolioHeader extends StatelessWidget {
                             color:
                                 activePage == 'Work'
                                     ? AppColors.primary
-                                    : Colors.white,
+                                    : AppColors.white,
                             fontWeight:
                                 FontWeight.w700,
                             fontSize: 16,
@@ -255,7 +255,7 @@ class PortfolioHeader extends StatelessWidget {
                             color:
                                 activePage == 'About'
                                     ? AppColors.primary
-                                    : Colors.white,
+                                    : AppColors.white,
                             fontWeight:
                                 FontWeight.w700,
                             fontSize: 16,
@@ -271,7 +271,7 @@ class PortfolioHeader extends StatelessWidget {
                             color:
                                 activePage == 'Contact'
                                     ? AppColors.primary
-                                    : Colors.white,
+                                    : AppColors.white,
                             fontWeight:
                                 FontWeight.w700,
                             fontSize: 16,
@@ -322,8 +322,8 @@ class _NavItem extends StatelessWidget {
                 title,
                 style: TextStyle(
                   color: isActive
-                      ? Colors.white
-                      : const Color(0xFF9E9699),
+                      ? AppColors.white
+                      : AppColors.mutedDark,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),

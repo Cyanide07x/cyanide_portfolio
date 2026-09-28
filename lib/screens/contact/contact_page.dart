@@ -165,11 +165,14 @@ class _ContactPageState extends State<ContactPage> {
 
           Expanded(
             child: SingleChildScrollView(
-              child: _buildContactSection(context),
+              child: Column(
+                children: [
+                  _buildContactSection(context),
+                  const PortfolioFooter(),
+                ],
+              ),
             ),
           ),
-
-          const PortfolioFooter(),
         ],
       ),
     );
@@ -287,7 +290,7 @@ class _ContactPageState extends State<ContactPage> {
         Text(
           "Let's get in sync.",
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontSize: headingSize,
             fontWeight: FontWeight.w700,
             height: 1.05,
@@ -299,7 +302,7 @@ class _ContactPageState extends State<ContactPage> {
           "Tell me what's misaligned and what you're trying to "
           "build. I reply within two working days.",
           style: TextStyle(
-            color: Color(0xFFB0A8AC),
+            color: AppColors.muted,
             fontSize: 18,
             fontWeight: FontWeight.w400,
             height: 1.7,
@@ -344,7 +347,7 @@ class _ContactPageState extends State<ContactPage> {
         Text(
           label,
           style: const TextStyle(
-            color: Color(0xFFB0A8AC),
+            color: AppColors.muted,
             fontSize: 14,
             fontWeight: FontWeight.w400,
             height: 1.4,
@@ -354,7 +357,7 @@ class _ContactPageState extends State<ContactPage> {
         Text(
           value,
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             height: 1.4,
@@ -450,10 +453,9 @@ class _ContactPageState extends State<ContactPage> {
                     : const Text(
                         'Send message',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 16,
-                          fontWeight:
-                              FontWeight.w700,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
               ),
@@ -478,7 +480,7 @@ class _ContactPageState extends State<ContactPage> {
         Text(
           label,
           style: const TextStyle(
-            color: Color(0xFFB0A8AC),
+            color: AppColors.muted,
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
@@ -498,7 +500,7 @@ class _ContactPageState extends State<ContactPage> {
                 return null;
               },
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontSize: 18,
           ),
           cursorColor: AppColors.primary,

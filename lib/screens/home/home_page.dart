@@ -338,7 +338,7 @@ class _HomePageState extends State<HomePage>
                                     TextSpan(
                                       text: _displayedText,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: AppColors.white,
                                         fontSize: headingSize,
                                         height: 1.05,
                                         fontWeight:
@@ -395,7 +395,7 @@ class _HomePageState extends State<HomePage>
                               "to bring it back into sync.",
                               style: TextStyle(
                                 color:
-                                    const Color(0xFFB0A8AC),
+                                    AppColors.muted,
                                 fontSize: descriptionSize,
                                 height: 1.7,
                                 fontWeight:

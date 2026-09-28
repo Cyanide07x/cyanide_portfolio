@@ -49,7 +49,7 @@ Future<void> _openUrl(String url) async {
             color: AppColors.background,
             border: Border(
               top: BorderSide(
-                color: Colors.white.withValues(alpha: 0.08),
+                color: AppColors.white.withValues(alpha: 0.08),
                 width: 1,
               ),
             ),
@@ -87,7 +87,7 @@ Future<void> _openUrl(String url) async {
         const Text(
           'CYNX — Without Sync, 2026',
           style: TextStyle(
-            color: Color(0xFFB0A8AC),
+            color: AppColors.muted,
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
@@ -133,7 +133,7 @@ Future<void> _openUrl(String url) async {
     return const Text(
       'CYNX — Without Sync, 2026',
       style: TextStyle(
-        color: Color(0xFFB0A8AC),
+        color: AppColors.muted,
         fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
@@ -221,8 +221,8 @@ class _FooterLinkState extends State<_FooterLink> {
           duration: const Duration(milliseconds: 150),
           style: TextStyle(
             color: isHovered
-                ? Colors.white
-                : const Color(0xFFB0A8AC),
+                ? AppColors.white
+                : AppColors.muted,
             fontSize: widget.fontSize,
             fontWeight: FontWeight.w600,
           ),
@@ -275,10 +275,10 @@ class _ResumeButtonState extends State<_ResumeButton> {
           ),
           decoration: BoxDecoration(
             color: isHovered
-                ? const Color(0xFF151515)
+                ? AppColors.surfaceHover
                 : Colors.transparent,
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.12),
+              color: AppColors.white.withValues(alpha: 0.12),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(2),
@@ -286,7 +286,7 @@ class _ResumeButtonState extends State<_ResumeButton> {
           child: const Text(
             'Resume ↓',
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 14,
               fontWeight: FontWeight.w700,
             ),

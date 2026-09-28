@@ -10,4 +10,10 @@ class AppColors {
   static const white = Colors.white;
 
   static const grey = Color(0xFF9E9E9E);
+
+  static const muted = Color(0xFFB0A8AC);
+
+  static const mutedDark = Color(0xFF9E9699);
+
+  static const surfaceHover = Color(0xFF151515);
 }

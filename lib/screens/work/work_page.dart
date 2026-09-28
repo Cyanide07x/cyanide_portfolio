@@ -117,7 +117,7 @@ class WorkPage extends StatelessWidget {
                   Text(
                     'One project so far — built end to end.',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.white,
                       fontSize: isMobile
                           ? 36
                           : 58,
@@ -140,7 +140,7 @@ class WorkPage extends StatelessWidget {
                     "the way.",
                     style: TextStyle(
                       color:
-                          const Color(0xFFB0A8AC),
+                          AppColors.muted,
                       fontSize:
                           isMobile ? 17 : 18,
                       height: 1.7,
@@ -165,13 +165,13 @@ class WorkPage extends StatelessWidget {
             border: Border(
               top: BorderSide(
                 color:
-                    Colors.white.withValues(
+                    AppColors.white.withValues(
                   alpha: 0.08,
                 ),
               ),
               bottom: BorderSide(
                 color:
-                    Colors.white.withValues(
+                    AppColors.white.withValues(
                   alpha: 0.08,
                 ),
               ),
@@ -209,7 +209,7 @@ class WorkPage extends StatelessWidget {
                   TextAlign.center,
               style: TextStyle(
                 color:
-                    const Color(0xFFB0A8AC),
+                    AppColors.muted,
                 fontSize:
                     isMobile ? 16 : 18,
                 height: 1.5,
@@ -348,7 +348,7 @@ class WorkPage extends StatelessWidget {
           '01 — Featured',
           style: TextStyle(
             color:
-                Color(0xFFB0A8AC),
+                AppColors.muted,
             fontSize: 16,
             fontWeight:
                 FontWeight.w400,
@@ -363,7 +363,7 @@ class WorkPage extends StatelessWidget {
           'CalCynx',
           style: TextStyle(
             color:
-                Colors.white,
+                AppColors.white,
             fontSize: 30,
             fontWeight:
                 FontWeight.w800,
@@ -382,7 +382,7 @@ class WorkPage extends StatelessWidget {
           'important dates in one place.',
           style: TextStyle(
             color:
-                Color(0xFFB0A8AC),
+                AppColors.muted,
             fontSize: 18,
             height: 1.65,
             fontWeight:
@@ -466,7 +466,7 @@ class WorkPage extends StatelessWidget {
             '•',
             style: TextStyle(
               color:
-                  Color(0xFFB0A8AC),
+                  AppColors.muted,
               fontSize: 18,
             ),
           ),
@@ -482,7 +482,7 @@ class WorkPage extends StatelessWidget {
             style:
                 const TextStyle(
               color:
-                  Color(0xFFB0A8AC),
+                  AppColors.muted,
               fontSize: 16,
               height: 1.55,
             ),
@@ -764,7 +764,7 @@ class _CalCynxPreviewState
               border:
                   Border.all(
                 color:
-                    Colors.white
+                    AppColors.white
                         .withValues(
                   alpha: 0.12,
                 ),
@@ -906,7 +906,7 @@ class _CalCynxPreviewState
           'YOUR WORKSPACE',
           style: TextStyle(
             color:
-                Colors.white,
+                AppColors.white,
             fontSize:
                 isMobile
                     ? 12
@@ -931,9 +931,7 @@ class _CalCynxPreviewState
           'Keep everything in sync.',
           style: TextStyle(
             color:
-                const Color(
-              0xFF9E9699,
-            ),
+                AppColors.mutedDark,
             fontSize:
                 isMobile
                     ? 11
@@ -977,7 +975,7 @@ class _CalCynxPreviewState
                 )} ${_displayedMonth.year}',
                 style: TextStyle(
                   color:
-                      Colors.white,
+                      AppColors.white,
                   fontSize:
                       isMobile
                           ? 12
@@ -1216,7 +1214,7 @@ class _CalCynxPreviewState
             Border.all(
           color: isToday
               ? AppColors.primary
-              : Colors.white
+              : AppColors.white
                   .withValues(
                   alpha: 0.06,
                 ),
@@ -1232,10 +1230,8 @@ class _CalCynxPreviewState
           style:
               TextStyle(
             color: isToday
-                ? Colors.white
-                : const Color(
-                    0xFFB0A8AC,
-                  ),
+                ? AppColors.white
+                : AppColors.muted,
             fontSize:
                 isMobile
                     ? 10
@@ -1305,7 +1301,7 @@ class _CalCynxPreviewState
         border:
             Border.all(
           color:
-              Colors.white
+              AppColors.white
                   .withValues(
             alpha: 0.08,
           ),
@@ -1341,9 +1337,7 @@ class _CalCynxPreviewState
               style:
                   TextStyle(
                 color:
-                    const Color(
-                  0xFFB0A8AC,
-                ),
+                    AppColors.muted,
                 fontSize:
                     isMobile
                         ? 10
@@ -1407,9 +1401,7 @@ class _CalCynxPreviewState
         decoration:
             BoxDecoration(
           color: _taskHovered
-              ? const Color(
-                  0xFF151515,
-                )
+              ? AppColors.surfaceHover
               : const Color(
                   0xFF0D0D0D,
                 ),
@@ -1421,7 +1413,7 @@ class _CalCynxPreviewState
                     .withValues(
                     alpha: 0.35,
                   )
-                : Colors.white
+                : AppColors.white
                     .withValues(
                     alpha: 0.08,
                   ),
@@ -1469,7 +1461,7 @@ class _CalCynxPreviewState
                 style:
                     TextStyle(
                   color:
-                      Colors.white,
+                      AppColors.white,
                   fontSize: 13,
                 ),
               ),
@@ -1601,7 +1593,7 @@ class _PreviewTabState
                           alpha:
                               0.35,
                         )
-                      : Colors.white
+                      : AppColors.white
                           .withValues(
                           alpha:
                               0.10,
@@ -1620,12 +1612,10 @@ class _PreviewTabState
               style:
                   TextStyle(
                 color: active
-                    ? Colors.white
+                    ? AppColors.white
                     : _hovered
-                        ? Colors.white
-                        : const Color(
-                            0xFF9E9699,
-                          ),
+                        ? AppColors.white
+                        : AppColors.mutedDark,
                 fontSize:
                     widget.isMobile
                         ? 12
@@ -1762,7 +1752,7 @@ class _MonthButtonState
                       .withValues(
                       alpha: 0.45,
                     )
-                  : Colors.white
+                  : AppColors.white
                       .withValues(
                       alpha: 0.08,
                     ),
@@ -1775,9 +1765,7 @@ class _MonthButtonState
           child: Icon(
             widget.icon,
             color:
-                const Color(
-              0xFF9E9699,
-            ),
+                AppColors.mutedDark,
             size:
                 widget.isMobile
                     ? 14
@@ -1816,7 +1804,7 @@ class _TechTag
         border:
             Border.all(
           color:
-              Colors.white
+              AppColors.white
                   .withValues(
             alpha: 0.10,
           ),
@@ -1831,7 +1819,7 @@ class _TechTag
         style:
             const TextStyle(
           color:
-              Colors.white,
+              AppColors.white,
           fontSize: 13,
           fontWeight:
               FontWeight.w500,

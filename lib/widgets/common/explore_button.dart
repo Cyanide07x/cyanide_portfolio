@@ -51,7 +51,7 @@ class _ExploreButtonState extends State<ExploreButton> {
           child: Text(
             'EXPLORE THE SYNC',
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 12,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.5,
