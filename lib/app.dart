@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'screens/intro/intro_page.dart';
 import 'theme/app_theme.dart';
 
@@ -9,11 +10,8 @@ class PortfolioApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      title: 'Cynx Portfolio',
-
+      title: 'CYNX Folio',
       theme: AppTheme.dark,
-
       home: const IntroPage(),
     );
   }
