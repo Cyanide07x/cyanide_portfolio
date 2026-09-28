@@ -98,7 +98,7 @@ class AboutPage extends StatelessWidget {
               maxWidth: 700,
             ),
             child: const Text(
-              'I’m a computer science graduate and developer working under the name CYNX. I enjoy building digital experiences where design, technology and identity come together.',
+              "I'm a Flutter developer, fresh out of college and building my first real body of work. I move between product design, brand, and app development, and I'm drawn to the seam between disciplines more than the middle of either one. Everything on this site is a project I chose because it stretched me somewhere new.",
               style: TextStyle(
                 color: Color(0xFF9E9699),
                 fontSize: 18,

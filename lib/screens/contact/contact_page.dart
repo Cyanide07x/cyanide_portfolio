@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_colors.dart';
@@ -29,6 +31,13 @@ class _ContactPageState extends State<ContactPage> {
   final TextEditingController _messageController =
       TextEditingController();
 
+  bool _isSending = false;
+
+  static const String _formspreeEndpoint =
+      'https://formspree.io/f/mjykpddr';
+
+  static const String _discordUsername = 'cyanide.lc';
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -38,54 +47,110 @@ class _ContactPageState extends State<ContactPage> {
     super.dispose();
   }
 
-  // =========================
-  // SEND MESSAGE
-  // =========================
-
   Future<void> _sendMessage() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
+    if (_isSending) {
+      return;
+    }
+
+    setState(() {
+      _isSending = true;
+    });
+
     final String name = _nameController.text.trim();
     final String email = _emailController.text.trim();
     final String message = _messageController.text.trim();
 
-    final String subject =
-        'Portfolio contact from $name';
+    try {
+      final response = await http.post(
+        Uri.parse(_formspreeEndpoint),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          'name': name,
+          'email': email,
+          '_replyto': email,
+          'message': message,
+          '_subject': 'Portfolio contact from $name',
+        },
+      );
 
-    final String body =
-        'Name: $name\n'
-        'Email: $email\n\n'
-        'Message:\n$message';
+      if (!mounted) {
+        return;
+      }
 
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: 'hello@cynx.dev',
-      queryParameters: {
-        'subject': subject,
-        'body': body,
-      },
-    );
+      if (response.statusCode >= 200 &&
+          response.statusCode < 300) {
+        _nameController.clear();
+        _emailController.clear();
+        _messageController.clear();
 
-    if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
-    } else {
-      if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Message sent successfully.',
+            ),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Something went wrong. Please try again.',
+            ),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'Unable to open your email application.',
+            'Unable to send the message. Please try again.',
           ),
+          duration: Duration(seconds: 4),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSending = false;
+        });
+      }
     }
   }
 
-  // =========================
-  // BUILD
-  // =========================
+  Future<void> _copyDiscordUsername() async {
+    await Clipboard.setData(
+      const ClipboardData(
+        text: _discordUsername,
+      ),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Discord username copied!',
+        ),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,16 +175,13 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  // =========================
-  // CONTACT SECTION
-  // =========================
-
   Widget _buildContactSection(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double width = constraints.maxWidth;
 
         final bool isMobile = width < 700;
+
         final bool isTablet =
             width >= 700 && width < 1100;
 
@@ -162,10 +224,6 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  // =========================
-  // DESKTOP / TABLET
-  // =========================
-
   Widget _buildDesktopLayout(
     BuildContext context,
     double headingSize,
@@ -181,11 +239,9 @@ class _ContactPageState extends State<ContactPage> {
             headingSize,
           ),
         ),
-
         SizedBox(
           width: isTablet ? 45 : 90,
         ),
-
         Expanded(
           flex: 6,
           child: _buildContactForm(context),
@@ -193,10 +249,6 @@ class _ContactPageState extends State<ContactPage> {
       ],
     );
   }
-
-  // =========================
-  // MOBILE
-  // =========================
 
   Widget _buildMobileLayout(
     BuildContext context,
@@ -209,17 +261,11 @@ class _ContactPageState extends State<ContactPage> {
           context,
           headingSize,
         ),
-
         const SizedBox(height: 55),
-
         _buildContactForm(context),
       ],
     );
   }
-
-  // =========================
-  // CONTACT INFORMATION
-  // =========================
 
   Widget _buildContactInfo(
     BuildContext context,
@@ -237,9 +283,7 @@ class _ContactPageState extends State<ContactPage> {
             letterSpacing: 1.5,
           ),
         ),
-
         const SizedBox(height: 24),
-
         Text(
           "Let's get in sync.",
           style: TextStyle(
@@ -250,9 +294,7 @@ class _ContactPageState extends State<ContactPage> {
             letterSpacing: -0.8,
           ),
         ),
-
         const SizedBox(height: 28),
-
         const Text(
           "Tell me what's misaligned and what you're trying to "
           "build. I reply within two working days.",
@@ -263,42 +305,33 @@ class _ContactPageState extends State<ContactPage> {
             height: 1.7,
           ),
         ),
-
         const SizedBox(height: 34),
-
         _buildInfoItem(
           label: 'Email',
-          value: 'hello@cynx.dev',
+          value: 'utsav0724@gmail.com',
           onTap: () async {
             final Uri uri = Uri(
               scheme: 'mailto',
-              path: 'hello@cynx.dev',
+              path: 'utsav0724@gmail.com',
             );
 
             await launchUrl(uri);
           },
         ),
-
         const SizedBox(height: 26),
-
         _buildInfoItem(
           label: 'Location',
           value: 'Remote, working worldwide',
         ),
-
         const SizedBox(height: 26),
-
         _buildInfoItem(
           label: 'Elsewhere',
-          value: 'Instagram — Are.na — GitHub',
+          value: 'Discord',
+          onTap: _copyDiscordUsername,
         ),
       ],
     );
   }
-
-  // =========================
-  // INFORMATION ITEM
-  // =========================
 
   Widget _buildInfoItem({
     required String label,
@@ -317,9 +350,7 @@ class _ContactPageState extends State<ContactPage> {
             height: 1.4,
           ),
         ),
-
         const SizedBox(height: 3),
-
         Text(
           value,
           style: const TextStyle(
@@ -345,10 +376,6 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  // =========================
-  // CONTACT FORM
-  // =========================
-
   Widget _buildContactForm(BuildContext context) {
     return Form(
       key: _formKey,
@@ -360,16 +387,15 @@ class _ContactPageState extends State<ContactPage> {
             controller: _nameController,
             hint: 'Your name',
           ),
-
           const SizedBox(height: 24),
-
           _buildField(
             label: 'Email',
             controller: _emailController,
             hint: 'you@example.com',
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              if (value == null || value.trim().isEmpty) {
+              if (value == null ||
+                  value.trim().isEmpty) {
                 return 'Please enter your email.';
               }
 
@@ -381,24 +407,27 @@ class _ContactPageState extends State<ContactPage> {
               return null;
             },
           ),
-
           const SizedBox(height: 24),
-
           _buildField(
             label: 'Message',
             controller: _messageController,
-            hint: 'Tell us about the project',
+            hint: 'Tell me about the project',
             maxLines: 5,
           ),
-
           const SizedBox(height: 30),
-
           MouseRegion(
-            cursor: SystemMouseCursors.click,
+            cursor: _isSending
+                ? SystemMouseCursors.basic
+                : SystemMouseCursors.click,
             child: GestureDetector(
-              onTap: _sendMessage,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
+              onTap: _isSending
+                  ? null
+                  : _sendMessage,
+              child: AnimatedContainer(
+                duration:
+                    const Duration(milliseconds: 200),
+                padding:
+                    const EdgeInsets.symmetric(
                   horizontal: 32,
                   vertical: 16,
                 ),
@@ -408,14 +437,25 @@ class _ContactPageState extends State<ContactPage> {
                     width: 1,
                   ),
                 ),
-                child: const Text(
-                  'Send message',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                child: _isSending
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child:
+                            CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: AppColors.primary,
+                        ),
+                      )
+                    : const Text(
+                        'Send message',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight:
+                              FontWeight.w700,
+                        ),
+                      ),
               ),
             ),
           ),
@@ -423,10 +463,6 @@ class _ContactPageState extends State<ContactPage> {
       ),
     );
   }
-
-  // =========================
-  // FORM FIELD
-  // =========================
 
   Widget _buildField({
     required String label,
@@ -447,9 +483,7 @@ class _ContactPageState extends State<ContactPage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-
         const SizedBox(height: 8),
-
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
@@ -476,7 +510,8 @@ class _ContactPageState extends State<ContactPage> {
             ),
             filled: true,
             fillColor: const Color(0xFF0B080B),
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding:
+                const EdgeInsets.symmetric(
               horizontal: 18,
               vertical: 16,
             ),
@@ -487,21 +522,24 @@ class _ContactPageState extends State<ContactPage> {
                 width: 1,
               ),
             ),
-            enabledBorder: const OutlineInputBorder(
+            enabledBorder:
+                const OutlineInputBorder(
               borderRadius: BorderRadius.zero,
               borderSide: BorderSide(
                 color: Color(0xFF292329),
                 width: 1,
               ),
             ),
-            focusedBorder: const OutlineInputBorder(
+            focusedBorder:
+                const OutlineInputBorder(
               borderRadius: BorderRadius.zero,
               borderSide: BorderSide(
                 color: AppColors.primary,
                 width: 1,
               ),
             ),
-            errorBorder: const OutlineInputBorder(
+            errorBorder:
+                const OutlineInputBorder(
               borderRadius: BorderRadius.zero,
               borderSide: BorderSide(
                 color: AppColors.primary,
