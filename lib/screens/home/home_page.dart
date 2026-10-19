@@ -9,47 +9,33 @@ import '../../widgets/common/reactive_polygon.dart';
 
 class HomePage extends StatelessWidget {
   final bool showHeader;
+  final bool embedded;
 
   const HomePage({
     super.key,
     this.showHeader = true,
+    this.embedded = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    // PortfolioShell owns scrolling, header and footer.
+    if (embedded) {
+      return _buildIntroSection(context);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          // =========================
-          // HEADER
-          // =========================
-
-          // The header is shown when HomePage
-          // is used normally.
-
-          // PortfolioShell will set showHeader:
-          // false so that its persistent header
-          // remains visible instead.
-
           if (showHeader)
-            const PortfolioHeader(
-              activePage: 'Home',
-            ),
-
-          // =========================
-          // PAGE CONTENT
-          // =========================
+            const PortfolioHeader(activePage: 'Home'),
 
           Expanded(
             child: SingleChildScrollView(
               child: _buildIntroSection(context),
             ),
           ),
-
-          // =========================
-          // FOOTER
-          // =========================
 
           const PortfolioFooter(),
         ],
@@ -183,7 +169,7 @@ class HomePage extends StatelessWidget {
                         '# What we do',
                         style: TextStyle(
                           color: AppColors.primary,
-                          fontSize: 14,
+                          fontSize: 24,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.5,
                         ),

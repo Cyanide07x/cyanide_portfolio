@@ -9,10 +9,12 @@ import '../../widgets/common/portfolio_footer.dart';
 
 class ContactPage extends StatefulWidget {
   final bool showHeader;
+  final bool embedded;
 
   const ContactPage({
     super.key,
     this.showHeader = true,
+    this.embedded = false,
   });
 
   @override
@@ -152,31 +154,35 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          if (widget.showHeader)
-            const PortfolioHeader(
-              activePage: 'Contact',
-            ),
 
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildContactSection(context),
-                  const PortfolioFooter(),
-                ],
-              ),
+@override
+Widget build(BuildContext context) {
+  if (widget.embedded) {
+    return _buildContactSection(context);
+  }
+
+  return Scaffold(
+    backgroundColor: AppColors.background,
+    body: Column(
+      children: [
+        if (widget.showHeader)
+          const PortfolioHeader(activePage: 'Contact'),
+
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildContactSection(context),
+                const PortfolioFooter(),
+              ],
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildContactSection(BuildContext context) {
     return LayoutBuilder(
@@ -281,7 +287,7 @@ class _ContactPageState extends State<ContactPage> {
           '# Contact',
           style: TextStyle(
             color: AppColors.primary,
-            fontSize: 14,
+            fontSize: 24,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.5,
           ),

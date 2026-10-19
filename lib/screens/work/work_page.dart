@@ -6,45 +6,32 @@ import '../../widgets/common/portfolio_footer.dart';
 
 class WorkPage extends StatelessWidget {
   final bool showHeader;
+  final bool embedded;
 
   const WorkPage({
     super.key,
     this.showHeader = true,
+    this.embedded = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (embedded) {
+      return _buildPageContent(context);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          // ==========================================================
-          // HEADER
-          // ==========================================================
-
           if (showHeader)
-            const PortfolioHeader(
-              activePage: 'Work',
-            ),
-
-          // ==========================================================
-          // SCROLLABLE PAGE
-          // ==========================================================
+            const PortfolioHeader(activePage: 'Work'),
 
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // ====================================================
-                  // PAGE CONTENT
-                  // ====================================================
-
                   _buildPageContent(context),
-
-                  // ====================================================
-                  // FOOTER
-                  // ====================================================
-
                   const PortfolioFooter(),
                 ],
               ),
@@ -103,7 +90,7 @@ class WorkPage extends StatelessWidget {
                     style: TextStyle(
                       color: AppColors.primary,
                       fontSize:
-                          14,
+                          24,
                       fontWeight:
                           FontWeight.w700,
                     ),

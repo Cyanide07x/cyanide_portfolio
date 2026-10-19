@@ -6,48 +6,42 @@ import '../../widgets/common/portfolio_footer.dart';
 
 class AboutPage extends StatelessWidget {
   final bool showHeader;
+  final bool embedded;
 
   const AboutPage({
     super.key,
     this.showHeader = true,
+    this.embedded = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (embedded) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildAboutSection(context),
+          _buildEducationSection(context),
+          _buildHowIWorkSection(context),
+        ],
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
-
       body: Column(
         children: [
-          // =====================================================
-          // HEADER
-          // =====================================================
-
           if (showHeader)
-            const PortfolioHeader(
-              activePage: 'About',
-            ),
-
-          // =====================================================
-          // PAGE CONTENT
-          // =====================================================
+            const PortfolioHeader(activePage: 'About'),
 
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildAboutSection(context),
-
                   _buildEducationSection(context),
-
                   _buildHowIWorkSection(context),
-
-                  // =================================================
-                  // FOOTER
-                  // =================================================
-
                   const PortfolioFooter(),
                 ],
               ),
@@ -72,7 +66,15 @@ class AboutPage extends StatelessWidget {
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
-          _sectionLabel('# About'),
+          const Text(
+          '# About',
+          style: TextStyle(
+            color: AppColors.primary,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.5,
+          ),
+        ),
 
           const SizedBox(height: 35),
 
@@ -225,7 +227,15 @@ class AboutPage extends StatelessWidget {
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
-          _sectionLabel('# Education'),
+          const Text(
+          'Education',
+          style: TextStyle(
+            color: AppColors.primary,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.5,
+          ),
+        ),
 
           const SizedBox(height: 55),
 
@@ -258,7 +268,15 @@ class AboutPage extends StatelessWidget {
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
-          _sectionLabel('# How I work'),
+          const Text(
+          '# How I work',
+          style: TextStyle(
+            color: AppColors.primary,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.5,
+          ),
+        ),
 
           const SizedBox(height: 55),
 
@@ -298,17 +316,7 @@ class AboutPage extends StatelessWidget {
   // SECTION LABEL
   // ===========================================================
 
-  Widget _sectionLabel(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: AppColors.primary,
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1.5,
-      ),
-    );
-  }
+
 
   // ===========================================================
   // RESPONSIVE PADDING
