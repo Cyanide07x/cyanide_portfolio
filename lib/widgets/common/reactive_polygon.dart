@@ -37,16 +37,18 @@ class ReactivePolygon extends StatelessWidget {
       transform: Matrix4.identity()
         ..translateByDouble(moveX, moveY, 0, 1)
         ..rotateZ(rotation),
-      child: Opacity(
-        opacity: 0.45,
-        child: ImageFiltered(
-          imageFilter: ImageFilter.blur(
-            sigmaX: 3,
-            sigmaY: 3,
-          ),
-          child: SvgPicture.asset(
-            'assets/images/logos/corner_decorations.svg',
-            fit: BoxFit.contain,
+      child: RepaintBoundary(
+        child: Opacity(
+          opacity: 0.45,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(
+              sigmaX: 3,
+              sigmaY: 3,
+            ),
+            child: SvgPicture.asset(
+              'assets/images/logos/corner_decorations.svg',
+              fit: BoxFit.contain,
+            ),
           ),
         ),
       ),

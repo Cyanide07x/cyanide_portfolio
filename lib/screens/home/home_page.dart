@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
-import '../../widgets/common/portfolio_header.dart';
 import '../../widgets/common/portfolio_footer.dart';
+import '../../widgets/common/portfolio_header.dart';
 import '../../widgets/common/reactive_polygon.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,15 +28,12 @@ class HomePage extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          if (showHeader)
-            const PortfolioHeader(activePage: 'Home'),
-
+          if (showHeader) const PortfolioHeader(activePage: 'Home'),
           Expanded(
             child: SingleChildScrollView(
               child: _buildIntroSection(context),
             ),
           ),
-
           const PortfolioFooter(),
         ],
       ),
@@ -57,9 +54,7 @@ class HomePage extends StatelessWidget {
         // =========================
 
         final bool isMobile = width < 700;
-
-        final bool isTablet =
-            width >= 700 && width < 1100;
+        final bool isTablet = width >= 700 && width < 1100;
 
         // =========================
         // RESPONSIVE PADDING
@@ -117,20 +112,13 @@ class HomePage extends StatelessWidget {
                 ? 48
                 : 58;
 
-        final double descriptionSize = isMobile
-            ? 17
-            : 18;
+        final double descriptionSize = isMobile ? 17 : 18;
 
-        // The actual width of the Stack after
-        // horizontal padding.
-        final double interactionWidth =
-            width - (horizontalPadding * 2);
+        // The actual width of the Stack after horizontal padding.
+        final double interactionWidth = width - (horizontalPadding * 2);
 
         // Approximate interaction height.
-        // This is only used to calculate the
-        // direction of polygon movement.
-        final double interactionHeight =
-            isMobile ? 500 : 400;
+        final double interactionHeight = isMobile ? 500 : 400;
 
         return SizedBox(
           width: double.infinity,
@@ -158,14 +146,12 @@ class HomePage extends StatelessWidget {
                             : 1200,
                   ),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // =========================
                       // LABEL
                       // =========================
-
-                      Text(
+                      const Text(
                         '# What we do',
                         style: TextStyle(
                           color: AppColors.primary,
@@ -182,7 +168,6 @@ class HomePage extends StatelessWidget {
                       // =========================
                       // TYPING HEADING
                       // =========================
-
                       _HomeTypingHeading(
                         headingSize: headingSize,
                       ),
@@ -194,7 +179,6 @@ class HomePage extends StatelessWidget {
                       // =========================
                       // DESCRIPTION
                       // =========================
-
                       ConstrainedBox(
                         constraints: BoxConstraints(
                           maxWidth: isMobile
@@ -213,12 +197,10 @@ class HomePage extends StatelessWidget {
                           "is misaligned and there's room "
                           "to bring it back into sync.",
                           style: TextStyle(
-                            color:
-                                AppColors.muted,
+                            color: AppColors.muted,
                             fontSize: descriptionSize,
                             height: 1.7,
-                            fontWeight:
-                                FontWeight.w400,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
@@ -256,51 +238,45 @@ class _HomeHeroPointerLayer extends StatefulWidget {
   });
 
   @override
-  State<_HomeHeroPointerLayer> createState() =>
-      _HomeHeroPointerLayerState();
+  State<_HomeHeroPointerLayer> createState() => _HomeHeroPointerLayerState();
 }
 
-class _HomeHeroPointerLayerState
-    extends State<_HomeHeroPointerLayer> {
-  Offset? _mousePosition;
+class _HomeHeroPointerLayerState extends State<_HomeHeroPointerLayer> {
+  late final ValueNotifier<Offset?> _mousePositionNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _mousePositionNotifier = ValueNotifier<Offset?>(null);
+  }
+
+  @override
+  void dispose() {
+    _mousePositionNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Keep polygon centered when the mouse
-    // hasn't entered the hero yet.
-    final Offset currentMousePosition =
-        _mousePosition ??
-            Offset(
-              widget.interactionWidth / 2,
-              widget.interactionHeight / 2,
-            );
+    final Offset defaultMousePosition = Offset(
+      widget.interactionWidth / 2,
+      widget.interactionHeight / 2,
+    );
 
     return MouseRegion(
       cursor: SystemMouseCursors.basic,
-
-      // =========================
-      // MOUSE TRACKING
-      // =========================
-
       onHover: (event) {
-        setState(() {
-          _mousePosition = event.localPosition;
-        });
+        _mousePositionNotifier.value = event.localPosition;
       },
-
       onExit: (_) {
-        setState(() {
-          _mousePosition = null;
-        });
+        _mousePositionNotifier.value = null;
       },
-
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           // =====================================================
           // REACTIVE POLYGON
           // =====================================================
-
           Positioned(
             right: widget.polygonRight,
             top: widget.polygonTop,
@@ -308,21 +284,25 @@ class _HomeHeroPointerLayerState
               child: SizedBox(
                 width: widget.polygonSize,
                 height: widget.polygonSize,
-                child: ReactivePolygon(
-                  mousePosition: currentMousePosition,
-                  areaSize: Size(
-                    widget.interactionWidth,
-                    widget.interactionHeight,
-                  ),
+                child: ValueListenableBuilder<Offset?>(
+                  valueListenable: _mousePositionNotifier,
+                  builder: (context, mousePosition, _) {
+                    return ReactivePolygon(
+                      mousePosition: mousePosition ?? defaultMousePosition,
+                      areaSize: Size(
+                        widget.interactionWidth,
+                        widget.interactionHeight,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
           ),
 
           // =====================================================
-          // TEXT CONTENT
+          // TEXT CONTENT (Isolated from hover rebuilds)
           // =====================================================
-
           widget.child,
         ],
       ),
@@ -342,34 +322,20 @@ class _HomeTypingHeading extends StatefulWidget {
   });
 
   @override
-  State<_HomeTypingHeading> createState() =>
-      _HomeTypingHeadingState();
+  State<_HomeTypingHeading> createState() => _HomeTypingHeadingState();
 }
 
-class _HomeTypingHeadingState
-    extends State<_HomeTypingHeading>
-    with SingleTickerProviderStateMixin {
-  final String _fullText =
-      'Design and code, out of phase on purpose.';
+class _HomeTypingHeadingState extends State<_HomeTypingHeading> {
+  final String _fullText = 'Design and code, out of phase on purpose.';
 
   String _displayedText = '';
-
   Timer? _typingTimer;
-
   int _currentIndex = 0;
-
-  late AnimationController _cursorController;
 
   @override
   void initState() {
     super.initState();
-
     _startTypingAnimation();
-
-    _cursorController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    )..repeat(reverse: true);
   }
 
   void _startTypingAnimation() {
@@ -378,9 +344,7 @@ class _HomeTypingHeadingState
       (timer) {
         if (_currentIndex < _fullText.length) {
           setState(() {
-            _displayedText =
-                _fullText.substring(0, _currentIndex + 1);
-
+            _displayedText = _fullText.substring(0, _currentIndex + 1);
             _currentIndex++;
           });
         } else {
@@ -393,8 +357,71 @@ class _HomeTypingHeadingState
   @override
   void dispose() {
     _typingTimer?.cancel();
-    _cursorController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          // Typed text
+          TextSpan(
+            text: _displayedText,
+            style: TextStyle(
+              color: AppColors.white,
+              fontSize: widget.headingSize,
+              height: 1.05,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+            ),
+          ),
+
+          // Blinking cursor isolated in its own widget
+          WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: _BlinkingCursor(
+              headingSize: widget.headingSize,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =========================
+// BLINKING CURSOR
+// =========================
+
+class _BlinkingCursor extends StatefulWidget {
+  final double headingSize;
+
+  const _BlinkingCursor({
+    required this.headingSize,
+  });
+
+  @override
+  State<_BlinkingCursor> createState() => _BlinkingCursorState();
+}
+
+class _BlinkingCursorState extends State<_BlinkingCursor>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _cursorController;
+
+  @override
+  void initState() {
+    super.initState();
+    _cursorController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _cursorController.dispose();
     super.dispose();
   }
 
@@ -402,42 +429,17 @@ class _HomeTypingHeadingState
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _cursorController,
-      builder: (context, child) {
-        final double opacity =
-            _cursorController.value;
-
-        return RichText(
-          text: TextSpan(
-            children: [
-              // Typed text
-              TextSpan(
-                text: _displayedText,
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: widget.headingSize,
-                  height: 1.05,
-                  fontWeight:
-                      FontWeight.w800,
-                  letterSpacing: -0.5,
-                ),
-              ),
-
-              // Blinking cursor
-              TextSpan(
-                text: '|',
-                style: TextStyle(
-                  color: AppColors.primary
-                      .withValues(
-                    alpha: opacity,
-                  ),
-                  fontSize: widget.headingSize,
-                  height: 1.05,
-                  fontWeight:
-                      FontWeight.w800,
-                  letterSpacing: -0.5,
-                ),
-              ),
-            ],
+      builder: (context, _) {
+        return Text(
+          '|',
+          style: TextStyle(
+            color: AppColors.primary.withValues(
+              alpha: _cursorController.value,
+            ),
+            fontSize: widget.headingSize,
+            height: 1.05,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
           ),
         );
       },

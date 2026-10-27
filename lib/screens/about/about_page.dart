@@ -173,23 +173,40 @@ class AboutPage extends StatelessWidget {
       );
     }
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics:
-          const NeverScrollableScrollPhysics(),
-      itemCount: capabilities.length,
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 18,
-        mainAxisSpacing: 18,
-        childAspectRatio: 2.4,
-      ),
-      itemBuilder: (context, index) {
-        return _CapabilityCard(
-          capability: capabilities[index],
-        );
-      },
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _CapabilityCard(
+                capability: capabilities[0],
+              ),
+            ),
+            const SizedBox(width: 18),
+            Expanded(
+              child: _CapabilityCard(
+                capability: capabilities[1],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        Row(
+          children: [
+            Expanded(
+              child: _CapabilityCard(
+                capability: capabilities[2],
+              ),
+            ),
+            const SizedBox(width: 18),
+            Expanded(
+              child: _CapabilityCard(
+                capability: capabilities[3],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

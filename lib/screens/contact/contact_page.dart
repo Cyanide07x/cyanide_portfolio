@@ -79,7 +79,7 @@ class _ContactPageState extends State<ContactPage> {
           'message': message,
           '_subject': 'Portfolio contact from $name',
         },
-      );
+      ).timeout(const Duration(seconds: 10));
 
       if (!mounted) {
         return;
